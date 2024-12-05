@@ -8,9 +8,9 @@ function initializeUsers() {
 
 // Add a new user to localStorage
 function addUser(newUser) {
-    const users = JSON.parse(localStorage.getItem('users'));
+    const users = JSON.parse(localStorage.getItem('users')) || [];
 
-    // Check if the email already exists
+    // Check if email already exists
     if (users.some(user => user.email === newUser.email)) {
         return { success: false, message: "User with this email already exists." };
     }
@@ -23,16 +23,15 @@ function addUser(newUser) {
 
 // Authenticate a user during login
 function authenticateUser(email, password) {
-    const users = JSON.parse(localStorage.getItem('users'));
+    const users = JSON.parse(localStorage.getItem('users')) || [];
     const user = users.find(user => user.email === email && user.password === password);
 
     if (user) {
-        // Store the authenticated session
+        // Store authenticated session
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('activeUser', JSON.stringify(user));
         return { success: true, message: "Login successful!" };
     }
-
     return { success: false, message: "Invalid email or password." };
 }
 
@@ -62,7 +61,7 @@ function redirectToUserPage() {
 
 // Fetch user data by email
 function getUserByEmail(email) {
-    const users = JSON.parse(localStorage.getItem('users'));
+    const users = JSON.parse(localStorage.getItem('users')) || [];
     return users.find(user => user.email === email);
 }
 
