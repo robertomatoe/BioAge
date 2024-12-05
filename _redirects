@@ -1,1 +1,18 @@
-/* /index.html 200
+# Main redirects
+/   /index.html   200
+/* /index.html   404
+
+# Handle .html extensions
+/about     /about.html     200
+/services  /services.html  200
+/technology /technology.html 200
+/membership /membership.html 200
+/contact   /contact.html   200
+/login     /login.html     200
+/register  /register.html  200
+/portal    /portal.html    200
+
+# Service section redirects
+/services/diagnostics  /services.html#diagnostics   200
+/services/treatments   /services.html#treatments    200
+/services/monitoring   /services.html#monitoring    200

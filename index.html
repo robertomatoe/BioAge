@@ -12,21 +12,24 @@
     <nav class="bg-white shadow-lg fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-20">
+                <!-- Logo -->
                 <div class="flex items-center">
                     <a href="index.html" class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">BioAge Revolution</a>
                 </div>
+                
+                <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="about.html" class="text-gray-600 hover:text-blue-600 transition duration-300">About</a>
                     <a href="services.html" class="text-gray-600 hover:text-blue-600 transition duration-300">Services</a>
                     <a href="technology.html" class="text-gray-600 hover:text-blue-600 transition duration-300">Technology</a>
                     <a href="membership.html" class="text-gray-600 hover:text-blue-600 transition duration-300">Membership</a>
                     <a href="contact.html" class="text-gray-600 hover:text-blue-600 transition duration-300">Contact</a>
-                    <!-- Updated portal link -->
                     <a href="login.html" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition duration-300">
                         Patient Portal
                     </a>
                 </div>
-                <!-- Mobile menu button -->
+
+                <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
                     <button onclick="toggleMobileMenu()" class="text-gray-600 hover:text-blue-600 focus:outline-none">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -35,16 +38,17 @@
                     </button>
                 </div>
             </div>
-        </div>
-        <!-- Mobile menu -->
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="about.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600">About</a>
-                <a href="services.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600">Services</a>
-                <a href="technology.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600">Technology</a>
-                <a href="membership.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600">Membership</a>
-                <a href="contact.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600">Contact</a>
-                <a href="login.html" class="block px-3 py-2 text-blue-600 font-medium">Patient Portal</a>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200">
+                    <a href="about.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-md">About</a>
+                    <a href="services.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-md">Services</a>
+                    <a href="technology.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-md">Technology</a>
+                    <a href="membership.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-md">Membership</a>
+                    <a href="contact.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-md">Contact</a>
+                    <a href="login.html" class="block px-3 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-md">Patient Portal</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -121,7 +125,7 @@
                 </div>
                 <!-- Treatment Programs -->
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-delay="200">
-                    <img src="/api/placeholder/600/400" alt="Treatment Programs" class="w-full h-48 object-cover">
+                    <img src="/api/placeholder/600/400" alt="Treatment Programs" class="w-full h-full object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Premium Treatments</h3>
                         <p class="text-gray-600 mb-4">Cutting-edge therapies including stem cell treatments and NAD+ infusions.</p>
@@ -178,7 +182,7 @@
         </div>
     </section>
 
-    <!-<!-- Updated Patient Portal Section -->
+    <!-- Patient Portal Section -->
     <section class="py-20 bg-gradient-to-r from-blue-900 to-indigo-900">
         <div class="max-w-7xl mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -208,7 +212,6 @@
                         </div>
                     </div>
                     <div class="mt-8 space-x-4">
-                        <!-- Updated links -->
                         <a href="login.html" class="inline-block bg-white text-blue-900 px-8 py-4 rounded-lg hover:bg-gray-100 transition duration-300">
                             Sign In to Portal
                         </a>
@@ -224,7 +227,6 @@
             </div>
         </div>
     </section>
-
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4">
@@ -277,6 +279,16 @@
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             menu.classList.toggle('hidden');
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInside = menu.contains(event.target) || 
+                                    event.target.closest('[onclick="toggleMobileMenu()"]');
+                
+                if (!isClickInside && !menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                }
+            });
         }
     </script>
 </body>
