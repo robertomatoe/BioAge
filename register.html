@@ -83,52 +83,75 @@
     </div>
 
     <script>
+        // Initialize the users array in localStorage
+        if (!localStorage.getItem('users')) {
+            localStorage.setItem('users', JSON.stringify([]));
+        }
+
+        // Add a new user to the users array
+        function addUser(newUser) {
+            const users = JSON.parse(localStorage.getItem('users')); // Retrieve existing users
+
+            // Check if the email already exists
+            if (users.some(user => user.email === newUser.email)) {
+                alert("User with this email already exists.");
+                return false;
+            }
+
+            // Add the new user
+            users.push(newUser);
+
+            // Save back to localStorage
+            localStorage.setItem('users', JSON.stringify(users));
+
+            alert("User registered successfully!");
+            return true;
+        }
+
+        // Handle Registration Form Submission
         function handleRegister(event) {
             event.preventDefault();
 
-            const firstNameInput = document.getElementById('firstName');
-            const lastNameInput = document.getElementById('lastName');
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirmPassword');
-            const errorDiv = document.getElementById('errorMessage');
+            // Collect input values
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // Validate form inputs
-            if (!firstNameInput.value || !lastNameInput.value || !emailInput.value || 
-                !passwordInput.value || !confirmPasswordInput.value) {
-                showError('Please fill in all required fields.');
+            // Validate inputs
+            if (!firstName || !lastName || !email || !password || !confirmPassword) {
+                showError("Please fill in all required fields.");
                 return;
             }
 
-            if (passwordInput.value !== confirmPasswordInput.value) {
-                showError('Passwords do not match.');
+            if (password !== confirmPassword) {
+                showError("Passwords do not match.");
                 return;
             }
 
-            // Check if email is already registered
-            const existingUser = localStorage.getItem('userProfile');
-            if (existingUser) {
-                const user = JSON.parse(existingUser);
-                if (user.email === emailInput.value) {
-                    showError('This email is already registered.');
-                    return;
+            // Create a user object
+            const newUser = {
+                firstName,
+                lastName,
+                email,
+                password,
+                profileData: {
+                    age: null,
+                    preferences: {
+                        theme: "default",
+                        notifications: true
+                    }
                 }
-            }
-
-            // Save user information to local storage
-            const userProfile = {
-                firstName: firstNameInput.value,
-                lastName: lastNameInput.value,
-                email: emailInput.value,
-                password: passwordInput.value
             };
 
-            localStorage.setItem('userProfile', JSON.stringify(userProfile));
-
-            // Redirect to the login page
-            window.location.href = 'login.html';
+            // Add the user to localStorage
+            if (addUser(newUser)) {
+                window.location.href = 'login.html'; // Redirect to login page
+            }
         }
 
+        // Display Error Message
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.textContent = message;
