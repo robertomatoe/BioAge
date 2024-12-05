@@ -8,7 +8,7 @@ function initializeUsers() {
 
 // Add a new user to localStorage
 function addUser(newUser) {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const users = JSON.parse(localStorage.getItem('users'));
 
     // Check if email already exists
     if (users.some(user => user.email === newUser.email)) {
@@ -47,15 +47,15 @@ function logoutUser() {
     console.log("User logged out successfully.");
 }
 
-// Redirect to the user's profile page
+// Redirect to the user's profile page after login
 function redirectToUserPage() {
     const currentUser = getCurrentUser();
     if (currentUser) {
-        const email = encodeURIComponent(currentUser.email);
-        window.location.href = `/user.html?email=${email}`;
+        // Redirect to user-specific portal page
+        window.location.href = `user.html?email=${encodeURIComponent(currentUser.email)}`;
     } else {
         alert("You need to log in first.");
-        window.location.href = "/login.html";
+        window.location.href = "login.html";
     }
 }
 
@@ -65,36 +65,28 @@ function getUserByEmail(email) {
     return users.find(user => user.email === email);
 }
 
-// Load user profile dynamically in user.html
+// Populate the user's profile page
 function loadUserProfile() {
     const urlParams = new URLSearchParams(window.location.search);
     const email = urlParams.get('email');
-
-    if (!email) {
-        alert("No email specified.");
-        window.location.href = "/login.html";
-        return;
-    }
-
     const user = getUserByEmail(email);
 
     if (!user) {
         alert("User not found.");
-        window.location.href = "/login.html";
+        window.location.href = "login.html";
         return;
     }
 
-    // Populate profile details
+    // Populate the profile page with user data
     document.getElementById('profileName').textContent = `${user.firstName} ${user.lastName}`;
     document.getElementById('profileEmail').textContent = user.email;
 
-    // Optional: Display additional profile data (e.g., preferences)
+    // Additional profile details (example)
     if (user.profileData) {
-        const { age, preferences } = user.profileData;
-        document.getElementById('profileAge').textContent = age || "Not specified";
-        document.getElementById('profilePreferences').textContent = JSON.stringify(preferences, null, 2);
+        document.getElementById('profileAge').textContent = user.profileData.age || "Not provided";
+        document.getElementById('profilePreferences').textContent = JSON.stringify(user.profileData.preferences, null, 2);
     }
 }
 
-// Initialize the users array when the script loads
+// Ensure users array is initialized on load
 initializeUsers();
