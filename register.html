@@ -36,29 +36,31 @@
                     <form id="registerForm" class="space-y-6" onsubmit="handleRegister(event)">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">First Name</label>
-                                <input type="text" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                                <input type="text" id="firstName" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Last Name</label>
-                                <input type="text" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                                <input type="text" id="lastName" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Email Address</label>
-                            <input type="email" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                            <input type="email" id="email" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Password</label>
-                            <input type="password" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                            <input type="password" id="password" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                            <input type="password" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                            <input type="password" id="confirmPassword" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         </div>
+
+                        <div id="errorMessage" class="hidden text-sm text-red-600 text-center bg-red-50 rounded-lg p-2"></div>
 
                         <div class="flex items-start">
                             <input type="checkbox" required class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
@@ -83,9 +85,54 @@
     <script>
         function handleRegister(event) {
             event.preventDefault();
-            // In a real application, this would handle registration
-            // For demo purposes, redirect to login
+
+            const firstNameInput = document.getElementById('firstName');
+            const lastNameInput = document.getElementById('lastName');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const errorDiv = document.getElementById('errorMessage');
+
+            // Validate form inputs
+            if (!firstNameInput.value || !lastNameInput.value || !emailInput.value || 
+                !passwordInput.value || !confirmPasswordInput.value) {
+                showError('Please fill in all required fields.');
+                return;
+            }
+
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                showError('Passwords do not match.');
+                return;
+            }
+
+            // Check if email is already registered
+            const existingUser = localStorage.getItem('userProfile');
+            if (existingUser) {
+                const user = JSON.parse(existingUser);
+                if (user.email === emailInput.value) {
+                    showError('This email is already registered.');
+                    return;
+                }
+            }
+
+            // Save user information to local storage
+            const userProfile = {
+                firstName: firstNameInput.value,
+                lastName: lastNameInput.value,
+                email: emailInput.value,
+                password: passwordInput.value
+            };
+
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+
+            // Redirect to the login page
             window.location.href = 'login.html';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
         }
     </script>
 </body>
