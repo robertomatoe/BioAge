@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioAge Revolution - Premium Longevity Solutions</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Floating Appointment Button -->
+<div class="fixed bottom-8 right-8 z-50">
+    <button onclick="toggleAppointmentModal()" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-110">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+    </button>
+</div>
+
+<!-- Language Selector -->
+<div class="fixed top-6 right-24 z-50">
+    <select onchange="changeLanguage()" class="bg-transparent text-gray-600 border-none focus:ring-0">
+        <option value="en">English</option>
+        <option value="ko">한국어</option>
+    </select>
+</div>
+
+<!-- Quick Assessment Modal -->
+<div id="assessmentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold">Quick Age Assessment</h3>
+            <button onclick="closeAssessmentModal()" class="text-gray-500 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Age</label>
+                <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Primary Health Concern</label>
+                <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    <option>Aging Prevention</option>
+                    <option>Energy & Vitality</option>
+                    <option>Cognitive Function</option>
+                    <option>Physical Performance</option>
+                </select>
+            </div>
+            <button class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 rounded-lg hover:from-blue-700 hover:to-indigo-700">
+                Get Free Assessment
+            </button>
+        </div>
+    </div>
+</div>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">BioAge Revolution</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="about.html" class="text-gray-600 hover:text-blue-600 transition duration-300">About</a>
+                    <a href="services.html" class="text-gray-600 hover:text-blue-600 transition duration-300">Services</a>
+                    <a href="technology.html" class="text-gray-600 hover:text-blue-600 transition duration-300">Technology</a>
+                    <a href="membership.html" class="text-gray-600 hover:text-blue-600 transition duration-300">Membership</a>
+                    <a href="contact.html" class="text-gray-600 hover:text-blue-600 transition duration-300">Contact</a>
+                    <!-- Updated portal link -->
+                    <a href="login.html" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition duration-300">
+                        Patient Portal
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-gray-600 hover:text-blue-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="about.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600">About</a>
+                <a href="services.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600">Services</a>
+                <a href="technology.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600">Technology</a>
+                <a href="membership.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600">Membership</a>
+                <a href="contact.html" class="block px-3 py-2 text-gray-600 hover:text-blue-600">Contact</a>
+                <a href="login.html" class="block px-3 py-2 text-blue-600 font-medium">Patient Portal</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative h-screen flex items-center justify-center">
+        <div class="absolute inset-0 bg-gradient-to-r from-black to-transparent opacity-70"></div>
+        <img src="/api/placeholder/1920/1080" alt="Medical Technology" class="absolute inset-0 w-full h-full object-cover opacity-50">
+        <div class="relative z-10 max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6" data-aos="fade-up">
+                Reverse Your Biological Age
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+                Experience the future of longevity with Korea's premier age reversal program
+            </p>
+            <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6" data-aos="fade-up" data-aos-delay="400">
+                <a href="membership.html" class="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition duration-300">
+                    Start Your Journey
+                </a>
+                <a href="about.html" class="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-blue-600 transition duration-300">
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4" data-aos="fade-up">Why Choose BioAge Revolution</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+                    Combining cutting-edge technology with Korea's medical excellence
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center p-6 hover:shadow-xl transition duration-300 rounded-xl" data-aos="fade-up">
+                    <div class="text-4xl mb-4">🏥</div>
+                    <h3 class="text-xl font-bold mb-2">Hospital Network</h3>
+                    <p class="text-gray-600">Direct access to Korea's premier medical facilities, with state-of-the-art equipment and dedicated care units.</p>
+                </div>
+                <div class="text-center p-6 hover:shadow-xl transition duration-300 rounded-xl" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-4xl mb-4">🧬</div>
+                    <h3 class="text-xl font-bold mb-2">Advanced Technology</h3>
+                    <p class="text-gray-600">AI-powered longevity protocols backed by cutting-edge research and continuous monitoring.</p>
+                </div>
+                <div class="text-center p-6 hover:shadow-xl transition duration-300 rounded-xl" data-aos="fade-up" data-aos-delay="400">
+                    <div class="text-4xl mb-4">👨‍⚕️</div>
+                    <h3 class="text-xl font-bold mb-2">Expert Team</h3>
+                    <p class="text-gray-600">World-class medical professionals specializing in longevity and age-reversal treatments.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Preview -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4" data-aos="fade-up">Our Premium Services</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+                    Comprehensive longevity solutions tailored to your unique biology
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Diagnostic Package -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-up">
+                    <img src="/api/placeholder/600/400" alt="Diagnostic Services" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Advanced Diagnostics</h3>
+                        <p class="text-gray-600 mb-4">Comprehensive biomarker analysis and genetic profiling for personalized treatment plans.</p>
+                        <p class="text-blue-600 font-semibold">Starting at $5,000</p>
+                    </div>
+                </div>
+                <!-- Treatment Programs -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                    <img src="/api/placeholder/600/400" alt="Treatment Programs" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Premium Treatments</h3>
+                        <p class="text-gray-600 mb-4">Cutting-edge therapies including stem cell treatments and NAD+ infusions.</p>
+                        <p class="text-blue-600 font-semibold">Custom Programs Available</p>
+                    </div>
+                </div>
+                <!-- Monitoring -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-delay="400">
+                    <img src="/api/placeholder/600/400" alt="Continuous Monitoring" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Continuous Monitoring</h3>
+                        <p class="text-gray-600 mb-4">24/7 health tracking and real-time adjustments to your longevity protocol.</p>
+                        <p class="text-blue-600 font-semibold">Included with Premium Plans</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="py-20 bg-blue-900 text-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div data-aos="fade-up">
+                    <div class="text-4xl font-bold mb-2">10+</div>
+                    <p class="text-blue-200">Medical Facilities</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-4xl font-bold mb-2">50+</div>
+                    <p class="text-blue-200">Expert Physicians</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="400">
+                    <div class="text-4xl font-bold mb-2">1000+</div>
+                    <p class="text-blue-200">Satisfied Clients</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="600">
+                    <div class="text-4xl font-bold mb-2">15+</div>
+                    <p class="text-blue-200">Years Experience</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-6" data-aos="fade-up">Begin Your Journey to Optimal Health</h2>
+            <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+                Join Korea's premier longevity program and experience the future of healthcare
+            </p>
+            <a href="contact.html" class="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition duration-300" data-aos="fade-up" data-aos-delay="400">
+                Schedule a Consultation
+            </a>
+        </div>
+    </section>
+
+    <!-<!-- Updated Patient Portal Section -->
+    <section class="py-20 bg-gradient-to-r from-blue-900 to-indigo-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="text-white">
+                    <h2 class="text-4xl font-bold mb-6" data-aos="fade-up">Access Your Personal Health Dashboard</h2>
+                    <p class="text-xl text-blue-100 mb-8" data-aos="fade-up" data-aos-delay="200">
+                        Track your biological age, manage appointments, and monitor your treatment progress through our secure patient portal.
+                    </p>
+                    <div class="space-y-4" data-aos="fade-up" data-aos-delay="400">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span class="text-blue-100">Real-time health metrics tracking</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span class="text-blue-100">Easy appointment scheduling</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span class="text-blue-100">Treatment progress monitoring</span>
+                        </div>
+                    </div>
+                    <div class="mt-8 space-x-4">
+                        <!-- Updated links -->
+                        <a href="login.html" class="inline-block bg-white text-blue-900 px-8 py-4 rounded-lg hover:bg-gray-100 transition duration-300">
+                            Sign In to Portal
+                        </a>
+                        <a href="register.html" class="inline-block border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-blue-900 transition duration-300">
+                            New Patient Registration
+                        </a>
+                    </div>
+                </div>
+                <div class="relative" data-aos="fade-left">
+                    <img src="/api/placeholder/600/400" alt="Patient Portal Interface" class="rounded-lg shadow-2xl">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-10 rounded-lg"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                    <p class="text-gray-400">Chamjoeun Hospital</p>
+                    <p class="text-gray-400">+82-10-8255-0980</p>
+                    <p class="text-gray-400">rnhyunan@gmail.com</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition duration-300">About</a></li>
+                        <li><a href="services.html" class="text-gray-400 hover:text-white transition duration-300">Services</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="services.html#diagnostics" class="text-gray-400 hover:text-white transition duration-300">Diagnostics</a></li>
+                        <li><a href="services.html#treatments" class="text-gray-400 hover:text-white transition duration-300">Treatments</a></li>
+                        <li><a href="services.html#monitoring" class="text-gray-400 hover:text-white transition duration-300">Monitoring</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Locations</h3>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400">Chamjoeun Hospital</li>
+                        <li class="text-gray-400">Seoul Wellness Center</li>
+                        <li class="text-gray-400">Gangnam Medical Facility</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center">
+                <p class="text-gray-400">© 2024 BioAge Revolution. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>

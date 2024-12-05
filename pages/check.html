@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Check</title>
+    <script>
+        // Add this script to the top of portal.html
+        function checkAuth() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            if (isAuthenticated !== 'true') {
+                window.location.href = 'portal-login.html';
+            }
+        }
+
+        // Check authentication on page load
+        window.onload = checkAuth;
+    </script>
+</head>
+</html>
