@@ -25,7 +25,6 @@
     <!-- Registration Container -->
     <div class="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50">
         <div class="w-full max-w-lg">
-            <!-- Registration Form Card -->
             <div class="bg-white rounded-xl shadow-xl overflow-hidden">
                 <div class="p-8">
                     <div class="text-center mb-8">
@@ -37,125 +36,55 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
-                                <input type="text" id="firstName" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <input type="text" id="firstName" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
                             </div>
                             <div>
                                 <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
-                                <input type="text" id="lastName" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <input type="text" id="lastName" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
                             </div>
                         </div>
 
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                            <input type="email" id="email" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <input type="email" id="email" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
                         </div>
 
                         <div>
                             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                            <input type="password" id="password" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-
-                        <div>
-                            <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                            <input type="password" id="confirmPassword" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <input type="password" id="password" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
                         </div>
 
                         <div id="errorMessage" class="hidden text-sm text-red-600 text-center bg-red-50 rounded-lg p-2"></div>
 
-                        <div class="flex items-start">
-                            <input type="checkbox" required class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                            <label class="ml-2 text-sm text-gray-600">
-                                I agree to the <a href="#" class="text-blue-600 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-600 hover:underline">Privacy Policy</a>
-                            </label>
-                        </div>
-
-                        <button type="submit" class="w-full py-3 px-4 rounded-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 font-medium">
-                            Create Account
+                        <button type="submit" class="w-full py-3 px-4 rounded-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700">
+                            Register
                         </button>
                     </form>
-
-                    <div class="mt-6 text-center">
-                        <p class="text-gray-600">Already have an account? <a href="login.html" class="text-blue-600 font-medium hover:underline">Sign in here</a></p>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Initialize the users array in localStorage
-        if (!localStorage.getItem('users')) {
-            localStorage.setItem('users', JSON.stringify([]));
-        }
-
-        // Add a new user to the users array
-        function addUser(newUser) {
-            const users = JSON.parse(localStorage.getItem('users')); // Retrieve existing users
-
-            // Check if the email already exists
-            if (users.some(user => user.email === newUser.email)) {
-                alert("User with this email already exists.");
-                return false;
-            }
-
-            // Add the new user
-            users.push(newUser);
-
-            // Save back to localStorage
-            localStorage.setItem('users', JSON.stringify(users));
-
-            alert("User registered successfully!");
-            return true;
-        }
-
-        // Handle Registration Form Submission
         function handleRegister(event) {
             event.preventDefault();
 
-            // Collect input values
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const email = document.getElementById('email').value;
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // Validate inputs
-            if (!firstName || !lastName || !email || !password || !confirmPassword) {
-                showError("Please fill in all required fields.");
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+
+            if (users.some(user => user.email === email)) {
+                alert('User with this email already exists.');
                 return;
             }
 
-            if (password !== confirmPassword) {
-                showError("Passwords do not match.");
-                return;
-            }
-
-            // Create a user object
-            const newUser = {
-                firstName,
-                lastName,
-                email,
-                password,
-                profileData: {
-                    age: null,
-                    preferences: {
-                        theme: "default",
-                        notifications: true
-                    }
-                }
-            };
-
-            // Add the user to localStorage
-            if (addUser(newUser)) {
-                window.location.href = 'login.html'; // Redirect to login page
-            }
-        }
-
-        // Display Error Message
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.classList.remove('hidden');
+            users.push({ firstName, lastName, email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Account created successfully! Redirecting to sign-in...');
+            window.location.href = 'login.html';
         }
     </script>
 </body>

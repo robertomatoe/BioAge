@@ -44,14 +44,6 @@
                             <input type="password" id="password" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         </div>
 
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <input type="checkbox" id="rememberMe" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                                <label for="rememberMe" class="ml-2 block text-sm text-gray-600">Remember me</label>
-                            </div>
-                            <a href="#" onclick="forgotPassword()" class="text-sm text-blue-600 hover:underline">Forgot Password?</a>
-                        </div>
-
                         <div id="errorMessage" class="hidden text-sm text-red-600 text-center bg-red-50 rounded-lg p-2"></div>
 
                         <button type="submit" class="w-full py-3 px-4 rounded-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 font-medium">
@@ -73,42 +65,24 @@
 
             const emailInput = document.getElementById('email').value.trim();
             const passwordInput = document.getElementById('password').value;
-            const rememberMe = document.getElementById('rememberMe').checked;
             const errorDiv = document.getElementById('errorMessage');
 
-            const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.email === emailInput && u.password === passwordInput);
 
-            // Ensure user exists and validate email and password
-            if (!userProfile || userProfile.email !== emailInput || userProfile.password !== passwordInput) {
+            if (!user) {
                 errorDiv.textContent = 'Invalid email or password.';
                 errorDiv.classList.remove('hidden');
                 return;
             }
 
-            // Save to session if "Remember Me" is checked
-            if (rememberMe) {
-                localStorage.setItem('rememberedUser', emailInput);
-            } else {
-                localStorage.removeItem('rememberedUser');
-            }
+            // Save the active user
+            localStorage.setItem('activeUser', JSON.stringify(user));
+            localStorage.setItem('isAuthenticated', 'true');
 
-            // Redirect to the portal dashboard
+            // Redirect to the portal
             window.location.href = 'portal.html';
         }
-
-        function forgotPassword() {
-            alert('Forgot Password functionality is under development. Please contact support.');
-        }
-
-        // Auto-fill email if remembered
-        window.onload = function() {
-            const rememberedUser = localStorage.getItem('rememberedUser');
-            if (rememberedUser) {
-                document.getElementById('email').value = rememberedUser;
-                document.getElementById('rememberMe').checked = true;
-            }
-        };
     </script>
-    <script src="auth.js"></script>
 </body>
 </html>
