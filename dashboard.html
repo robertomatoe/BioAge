@@ -7,10 +7,29 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <script>
+        const API_BASE_URL = 'http://127.0.0.1:5001';
+
         window.onload = function () {
+            addTestUser({
+                firstName: "Jane",
+                lastName: "Doe",
+                biomarkers: {
+                    rbc: 5.2,
+                    wbc: 6.4,
+                    hemoglobin: 14.7,
+                    platelets: 245,
+                    weight: 68,
+                    height: 160,
+                    bmi: 26.5,
+                    systolic: 120,
+                    diastolic: 78,
+                },
+                gender: "female",
+            });
             checkAuth();
             loadUserData();
             initializeChart();
+            updateBioAge();
         };
 
         function checkAuth() {
@@ -30,9 +49,60 @@
             document.getElementById('userName').textContent = `${user.firstName} ${user.lastName}`;
         }
 
+        async function updateBioAge() {
+            const user = JSON.parse(localStorage.getItem('activeUser'));
+            console.log("Loaded user:", user);
+
+            if (user && user.biomarkers) {
+                console.log("Sending biomarkers to API:", user.biomarkers);
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/predict`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            red_blood_cells: user.biomarkers.rbc,
+                            white_blood_cells: user.biomarkers.wbc,
+                            hemoglobin: user.biomarkers.hemoglobin,
+                            platelets: user.biomarkers.platelets,
+                            weight: user.biomarkers.weight,
+                            height: user.biomarkers.height,
+                            bmi: user.biomarkers.bmi,
+                            systolic_bp: user.biomarkers.systolic,
+                            diastolic_bp: user.biomarkers.diastolic,
+                            gender: user.gender === "male" ? 1 : 2
+                        }),
+                    });
+
+                    console.log("API response:", response);
+
+                    if (!response.ok) {
+                        throw new Error("API call failed");
+                    }
+
+                    const data = await response.json();
+                    console.log("API data:", data);
+
+                    if (data.status === 'success') {
+                        document.getElementById('bioAge').textContent = `${data.biological_age.toFixed(1)} years`;
+                        updateChartData(data.biological_age);
+                    } else {
+                        document.getElementById('bioAge').textContent = 'Error';
+                    }
+                } catch (error) {
+                    console.error('Error fetching biological age:', error);
+                    document.getElementById('bioAge').textContent = 'Error';
+                }
+            } else {
+                document.getElementById('bioAge').textContent = 'No data';
+            }
+        }
+
         function initializeChart() {
             const ctx = document.getElementById('dashboardChart').getContext('2d');
-            new Chart(ctx, {
+            window.bioAgeChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
@@ -69,12 +139,50 @@
             });
         }
 
+        function updateChartData(newBioAge) {
+            if (window.bioAgeChart) {
+                const bioAgeData = window.bioAgeChart.data.datasets[0].data;
+                bioAgeData.shift();
+                bioAgeData.push(newBioAge);
+                window.bioAgeChart.update();
+            }
+        }
+
         function logout() {
             localStorage.removeItem('isAuthenticated');
             localStorage.removeItem('activeUser');
             alert("You have been logged out.");
             window.location.href = 'login.html';
         }
+
+        // Add test user function for development
+        function addTestUser({
+            firstName = "Test",
+            lastName = "User",
+            biomarkers = {
+                rbc: 4.8,
+                wbc: 7.0,
+                hemoglobin: 14.0,
+                platelets: 250,
+                weight: 70,
+                height: 170,
+                bmi: 24.2,
+                systolic: 120,
+                diastolic: 80,
+            },
+            gender = "male",
+        } = {}) {
+            const user = {
+                firstName,
+                lastName,
+                biomarkers,
+                gender,
+            };
+            localStorage.setItem("isAuthenticated", "true");
+            localStorage.setItem("activeUser", JSON.stringify(user));
+            console.log("Test user added:", user);
+        }
+
     </script>
 </head>
 <body class="bg-gray-50">
@@ -103,8 +211,8 @@
         <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="bg-blue-100 p-6 rounded-lg shadow-lg">
                 <h2 class="text-xl font-semibold">Biological Age</h2>
-                <p class="text-3xl font-bold text-blue-700">43.2</p>
-                <p class="text-gray-600 mt-2">Improved by <strong>1.8 years</strong> this month.</p>
+                <p class="text-3xl font-bold text-blue-700" id="bioAge">--</p>
+                <p class="text-gray-600 mt-2">Based on your biomarkers</p>
             </div>
             <div class="bg-green-100 p-6 rounded-lg shadow-lg">
                 <h2 class="text-xl font-semibold">Cellular Health</h2>
