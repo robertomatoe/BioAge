@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlocking Cognitive Resilience: Insights from the MRN - BioAge Revolution</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+    
+        main {
+            flex: 1;
+        }
+
+        article {
+        line-height: 1.8;
+        font-size: 1rem;
+        color: #2d3748; /* Dark gray text color */
+        margin-left: 7rem; /* Moves the entire article 7rem to the right */
+        }
+
+        footer {
+            width: 100%;
+            background-color: #1a202c;
+        }
+    </style>    
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="index.html" class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">BioAge Revolution</a>
+                </div>
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-600 transition duration-300">Home</a>
+                    <a href="about.html" class="text-gray-600 hover:text-blue-600 transition duration-300">About</a>
+                    <a href="services.html" class="text-gray-600 hover:text-blue-600 transition duration-300">Services</a>
+                    <a href="contact.html" class="text-gray-600 hover:text-blue-600 transition duration-300">Contact</a>
+                </div>
+                <!-- Mobile Menu -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-gray-600 hover:text-blue-600">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-5xl font-extrabold mb-4 animate-fade-in" data-aos="fade-down">
+                Unlocking Cognitive Resilience
+            </h1>
+            <p class="text-lg font-light mb-6" data-aos="fade-up" data-aos-delay="100">
+                Discover the groundbreaking research behind the Metacognitive Resilience Network (MRN) and its potential to redefine aging and cognitive health.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="py-12">
+        <article>
+            <p>
+                Aging is often associated with a decline in physical and cognitive abilities, but recent scientific discoveries challenge this notion, particularly when it comes to cognitive resilience. The concept of the <strong>Metacognitive Resilience Network (MRN)</strong> represents a groundbreaking advancement in our understanding of how the brain can adapt to age-related changes and even neurodegenerative conditions such as Alzheimer’s Disease (AD).
+            </p>
+    
+            <h2 class="text-2xl font-bold mt-6 mb-4">Understanding the Metacognitive Resilience Network</h2>
+            <p>
+                The MRN builds on the idea that the brain can adapt and preserve metacognition, which includes self-awareness, decision-making, and the ability to reflect on thought processes.
+            </p>
+            <ul class="list-disc mt-4 ml-6">
+                <li><strong>Neuroplasticity:</strong> The brain’s ability to adapt by reconfiguring neural pathways even when structures like the hippocampus experience degeneration.</li>
+                <li><strong>Independence:</strong> Metacognition remains resilient compared to other cognitive functions, providing unique therapeutic targets.</li>
+                <li><strong>Therapeutic Potential:</strong> Focusing on the MRN opens new avenues for treatments that can delay or mitigate cognitive decline.</li>
+            </ul>
+        </article>
+    </main>    
+
+    <section class="mt-8 bg-gray-100 py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <h3 class="text-3xl font-extrabold text-gray-900 mb-4">Join the Conversation</h3>
+            <p class="text-lg text-gray-700 mb-6">Engage with this article by sharing your thoughts, liking, or sharing it on social media. Your voice matters.</p>
+        
+            <!-- Like Button -->
+            <div class="flex items-center mb-6">
+                <button class="like-btn text-gray-600 hover:text-red-600 text-sm flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                    </svg>
+                    <span>0 Likes</span>
+                </button>                
+            </div>
+        
+            <!-- Comments Section -->
+            <div>
+                <h4 class="text-xl font-bold mb-2 text-gray-800">Comments</h4>
+                <textarea id="commentInput" 
+                    class="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:outline-none" 
+                    rows="4" 
+                    placeholder="Write your comment here..."></textarea>
+                <button id="postComment" 
+                    class="bg-blue-600 text-white px-6 py-2 rounded-lg mt-2 hover:bg-blue-700 transition">Post Comment</button>
+            </div>
+        
+            <!-- Threaded Comments -->
+            <div id="commentsContainer" class="mt-6 space-y-4">
+                <!-- Example Comment -->
+                <!-- Comments dynamically added here -->
+            </div>
+        
+            <!-- Share Section -->
+            <div class="mt-6">
+                <h4 class="text-xl font-bold mb-2 text-gray-800">Share this Article</h4>
+                <div class="flex flex-col md:flex-row md:space-x-4">
+                    <button class="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5 mr-2">
+                            <path d="M22.225 6.159c-.805.357-1.669.598-2.57.707a4.468 4.468 0 001.957-2.46 9.023 9.023 0 01-2.87 1.1 4.477 4.477 0 00-7.63 4.08A12.699 12.699 0 013.11 4.603a4.472 4.472 0 001.39 5.98 4.422 4.422 0 01-2.026-.56v.057a4.477 4.477 0 003.59 4.384c-.553.15-1.145.177-1.743.066a4.481 4.481 0 004.176 3.11A8.965 8.965 0 012 19.418 12.66 12.66 0 008.29 21c8.44 0 13.072-7.001 13.072-13.072 0-.2-.005-.398-.015-.597a9.318 9.318 0 002.278-2.372l-.4-.002z"/>
+                        </svg>
+                        Share on Twitter
+                    </button>
+                    <button class="flex items-center bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition focus:outline-none mt-2 md:mt-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5 mr-2">
+                            <path d="M23.96 12.39a11.99 11.99 0 01-1.4.72v-.04A4.822 4.822 0 0022 10.1c-.02-.22-.06-.44-.1-.66A4.8 4.8 0 0024 7.48a9.93 9.93 0 01-3.04 1.16 4.793 4.793 0 00-8.18 3.29c0 .34.04.66.1.98A13.6 13.6 0 011.67 5.14a4.75 4.75 0 00-.64 2.4 4.8 4.8 0 002.14 3.99 4.78 4.78 0 01-2.2-.62v.06a4.79 4.79 0 003.85 4.67 4.8 4.8 0 01-2.17.08 4.8 4.8 0 004.46 3.31A9.58 9.58 0 010 20.94a13.46 13.46 0 007.29 2.14 13.56 13.56 0 0013.64-13.62c0-.2-.01-.38-.03-.57A9.65 9.65 0 0024 12.39z"/>
+                        </svg>
+                        Share on Facebook
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>    
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                    <p class="text-gray-400">Chamjoeun Hospital</p>
+                    <p class="text-gray-400">+82-10-8255-0980</p>
+                    <p class="text-gray-400">rnhyunan@gmail.com</p>
+                </div>
+                <!-- Footer Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-400 hover:text-white">About</a></li>
+                        <li><a href="services.html" class="text-gray-400 hover:text-white">Services</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-800 text-center">
+                <p class="text-gray-400">© 2024 BioAge Revolution. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Function to create a comment or reply
+        function createCommentElement(text, isReply = false) {
+            const commentDiv = document.createElement('div');
+            commentDiv.className = `bg-white p-4 rounded-lg shadow-md ${isReply ? 'ml-6' : ''}`;
+            commentDiv.innerHTML = `
+                <div class="flex justify-between">
+                    <p class="text-gray-800 font-semibold">Anonymous</p>
+                    <button class="reply-btn text-blue-600 text-sm hover:underline">Reply</button>
+                </div>
+                <p class="text-gray-700 mt-2">${text}</p>
+                <div class="flex items-center space-x-4 mt-2">
+                    <button class="like-btn text-gray-600 hover:text-red-600 text-sm flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                        </svg>
+                        <span>0 Likes</span>
+                    </button>
+                </div>
+                <div class="replies mt-4 space-y-2"></div>
+            `;
+            return commentDiv;
+        }
+    
+        // Like Button Functionality
+        function handleLike(target) {
+            const likeCountSpan = target.querySelector('span');
+            const likes = parseInt(likeCountSpan.textContent.split(' ')[0]);
+            likeCountSpan.textContent = `${likes + 1} Likes`;
+        }
+    
+        // Reply Functionality
+        function handleReply(target) {
+            const parentComment = target.closest('.bg-white');
+            const repliesContainer = parentComment.querySelector('.replies');
+    
+            // Check if a reply input already exists
+            if (parentComment.querySelector('.reply-input')) return;
+    
+            // Create a reply input box
+            const replyInput = document.createElement('textarea');
+            replyInput.className = 'reply-input w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:outline-none mt-2';
+            replyInput.rows = 2;
+            replyInput.placeholder = 'Write your reply...';
+    
+            const postReplyButton = document.createElement('button');
+            postReplyButton.className = 'post-reply-btn bg-blue-600 text-white px-4 py-2 rounded-lg mt-2 hover:bg-blue-700 transition';
+            postReplyButton.textContent = 'Post Reply';
+    
+            // Append the input and button to the replies container
+            repliesContainer.appendChild(replyInput);
+            repliesContainer.appendChild(postReplyButton);
+    
+            // Add event listener to the post reply button
+            postReplyButton.addEventListener('click', () => {
+                const replyText = replyInput.value.trim();
+                if (replyText) {
+                    const replyElement = createCommentElement(replyText, true);
+                    repliesContainer.appendChild(replyElement);
+                    replyInput.remove();
+                    postReplyButton.remove();
+                }
+            });
+        }
+    
+        // Add event listeners for dynamic elements using event delegation
+        document.addEventListener('click', (event) => {
+            if (event.target.closest('.like-btn')) {
+                handleLike(event.target.closest('.like-btn'));
+            } else if (event.target.closest('.reply-btn')) {
+                handleReply(event.target.closest('.reply-btn'));
+            }
+        });
+    
+        // Main Comment Posting
+        const postComment = document.getElementById('postComment');
+        const commentInput = document.getElementById('commentInput');
+        const commentsContainer = document.getElementById('commentsContainer');
+    
+        postComment.addEventListener('click', () => {
+            const commentText = commentInput.value.trim();
+            if (commentText) {
+                const commentElement = createCommentElement(commentText);
+                commentsContainer.appendChild(commentElement);
+                commentInput.value = '';
+            }
+        });
+    </script>       
+    
+</body>
+</html>
