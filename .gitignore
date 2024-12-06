@@ -1,0 +1,7 @@
+bioage-server/
+venv/
+node_modules/
+.env
+.DS_Store
+Gemfile
+Gemfile.lock

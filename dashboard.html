@@ -51,11 +51,8 @@
 
         async function updateBioAge() {
             const user = JSON.parse(localStorage.getItem('activeUser'));
-            console.log("Loaded user:", user);
 
             if (user && user.biomarkers) {
-                console.log("Sending biomarkers to API:", user.biomarkers);
-
                 try {
                     const response = await fetch(`${API_BASE_URL}/api/predict`, {
                         method: 'POST',
@@ -72,28 +69,26 @@
                             bmi: user.biomarkers.bmi,
                             systolic_bp: user.biomarkers.systolic,
                             diastolic_bp: user.biomarkers.diastolic,
-                            gender: user.gender === "male" ? 1 : 2
+                            gender: user.gender === "male" ? 1 : 2,
                         }),
                     });
 
-                    console.log("API response:", response);
-
                     if (!response.ok) {
-                        throw new Error("API call failed");
+                        throw new Error(`API call failed with status ${response.status}`);
                     }
 
                     const data = await response.json();
-                    console.log("API data:", data);
 
                     if (data.status === 'success') {
                         document.getElementById('bioAge').textContent = `${data.biological_age.toFixed(1)} years`;
                         updateChartData(data.biological_age);
                     } else {
                         document.getElementById('bioAge').textContent = 'Error';
+                        console.error('API Error:', data);
                     }
                 } catch (error) {
-                    console.error('Error fetching biological age:', error);
                     document.getElementById('bioAge').textContent = 'Error';
+                    console.error('Error fetching biological age:', error);
                 }
             } else {
                 document.getElementById('bioAge').textContent = 'No data';
@@ -236,23 +231,6 @@
             <h2 class="text-2xl font-bold text-gray-900 mb-4">Health Trends</h2>
             <div class="bg-white p-6 rounded-lg shadow-lg">
                 <canvas id="dashboardChart" class="w-full h-64"></canvas>
-            </div>
-        </section>
-
-        <!-- Recommendations Section -->
-        <section class="mt-10">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Personalized Recommendations</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
-                    <h3 class="font-semibold text-blue-700">Exercise Routine</h3>
-                    <p class="text-gray-600 mt-2">Increase moderate cardio to 45 minutes, 4 times per week. Your metabolic age could benefit from additional aerobic activity.</p>
-                    <button class="mt-4 text-blue-600 hover:text-blue-700 font-medium">View detailed plan →</button>
-                </div>
-                <div class="bg-green-50 p-6 rounded-lg border border-green-200">
-                    <h3 class="font-semibold text-green-700">Nutrition Update</h3>
-                    <p class="text-gray-600 mt-2">Your omega-3 levels are low. Consider adding fatty fish or supplements to your diet 2-3 times per week.</p>
-                    <button class="mt-4 text-green-600 hover:text-green-700 font-medium">View meal plan →</button>
-                </div>
             </div>
         </section>
     </main>

@@ -1,0 +1,11 @@
+exclude:
+  - bioage-server
+  - venv
+  - node_modules
+  - .git
+  - .github
+  - .env
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - .DS_Store
