@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - BioAge Revolution</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script>
+        window.onload = function () {
+            checkAuth();
+            loadUserProfile();
+        };
+
+        function checkAuth() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            if (!isAuthenticated) {
+                alert("You must log in to access your profile.");
+                window.location.href = 'login.html';
+            }
+        }
+
+        function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem('activeUser'));
+
+            if (!user) {
+                alert("Error loading user data. Please log in again.");
+                window.location.href = 'login.html';
+            }
+
+            document.getElementById('userName').textContent = `${user.firstName} ${user.lastName}`;
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('userFirstName').value = user.firstName;
+            document.getElementById('userLastName').value = user.lastName;
+            document.getElementById('userEmailEdit').value = user.email;
+        }
+
+        function updateUserProfile(event) {
+            event.preventDefault();
+
+            const updatedUser = {
+                firstName: document.getElementById('userFirstName').value,
+                lastName: document.getElementById('userLastName').value,
+                email: document.getElementById('userEmailEdit').value,
+            };
+
+            localStorage.setItem('activeUser', JSON.stringify(updatedUser));
+            alert("Profile updated successfully!");
+            loadUserProfile();
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('activeUser');
+            alert("You have been logged out.");
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-6">
+                    <a href="index.html" class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">BioAge Revolution</a>
+                    <button class="text-gray-700 hover:text-blue-600" onclick="window.location.href='portal.html'">Back to Portal</button>
+                </div>
+                <div class="relative">
+                    <button onclick="logout()" class="flex items-center space-x-3 text-gray-700 hover:text-blue-600">
+                        Logout
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Content -->
+    <main class="p-6 max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">User Profile</h1>
+        <p class="text-gray-600">View and update your account information.</p>
+
+        <!-- User Details -->
+        <div class="bg-white rounded-lg shadow p-6 mt-6">
+            <h2 class="text-xl font-semibold text-gray-900">Profile Details</h2>
+            <p class="text-gray-600 mt-2">Name: <span id="userName">Loading...</span></p>
+            <p class="text-gray-600">Email: <span id="userEmail">Loading...</span></p>
+        </div>
+
+        <!-- Update Profile Form -->
+        <form id="profileForm" class="bg-white rounded-lg shadow p-6 mt-6 space-y-6" onsubmit="updateUserProfile(event)">
+            <h2 class="text-xl font-semibold text-gray-900">Edit Profile</h2>
+            <div>
+                <label for="userFirstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                <input type="text" id="userFirstName" class="mt-1 block w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            </div>
+            <div>
+                <label for="userLastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                <input type="text" id="userLastName" class="mt-1 block w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            </div>
+            <div>
+                <label for="userEmailEdit" class="block text-sm font-medium text-gray-700">Email Address</label>
+                <input type="email" id="userEmailEdit" class="mt-1 block w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            </div>
+            <button type="submit" class="w-full py-3 px-4 rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 font-medium">
+                Save Changes
+            </button>
+        </form>
+    </main>
+</body>
+</html>

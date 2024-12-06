@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goals - BioAge Revolution</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script>
+        window.onload = function () {
+            checkAuth();
+            loadUserData();
+            displayGoals();
+        };
+
+        function checkAuth() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            if (!isAuthenticated) {
+                alert("You must log in to access your goals.");
+                window.location.href = 'login.html';
+            }
+        }
+
+        function loadUserData() {
+            const user = JSON.parse(localStorage.getItem('activeUser'));
+            if (!user) {
+                alert("Error loading user data. Please log in again.");
+                window.location.href = 'login.html';
+            }
+            document.getElementById('userName').textContent = `${user.firstName} ${user.lastName}`;
+        }
+
+        function displayGoals() {
+            const user = JSON.parse(localStorage.getItem('activeUser'));
+            const goalsList = document.getElementById('goalsList');
+
+            const goals = user.goals || [
+                { title: "Exercise Regularly", description: "Do moderate cardio for 45 minutes, 4 times a week.", progress: 70 },
+                { title: "Improve Sleep Quality", description: "Sleep 7-8 hours daily and track your sleep cycles.", progress: 50 },
+                { title: "Boost Nutritional Intake", description: "Incorporate more omega-3 rich foods into meals.", progress: 60 },
+            ];
+
+            goals.forEach(goal => {
+                const goalItem = document.createElement('div');
+                goalItem.className = "p-6 bg-white rounded-lg shadow-lg mb-4";
+                goalItem.innerHTML = `
+                    <h3 class="text-lg font-semibold text-gray-900">${goal.title}</h3>
+                    <p class="text-gray-600 mt-2">${goal.description}</p>
+                    <div class="mt-4">
+                        <p class="text-sm text-gray-700">Progress</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${goal.progress}%"></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-1">${goal.progress}% completed</p>
+                    </div>
+                `;
+                goalsList.appendChild(goalItem);
+            });
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('activeUser');
+            alert("You have been logged out.");
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <a href="index.html" class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">BioAge Revolution</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="text-gray-700 hover:text-blue-600">Dashboard</a>
+                    <a href="health-trends.html" class="text-gray-700 hover:text-blue-600">Health Trends</a>
+                    <a href="goals.html" class="text-blue-600 font-medium">Goals</a>
+                    <a href="treatments.html" class="text-gray-700 hover:text-blue-600">Treatments</a>
+                </div>
+                <button onclick="logout()" class="text-gray-700 hover:text-blue-600">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="p-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Your Goals, <span id="userName">User</span></h1>
+        <p class="text-gray-600 mb-6">Track your progress and stay on top of your goals for optimal health.</p>
+
+        <!-- Goals Section -->
+        <section id="goalsList" class="space-y-4">
+            <!-- Dynamic Goals Will Be Rendered Here -->
+        </section>
+    </main>
+</body>
+</html>

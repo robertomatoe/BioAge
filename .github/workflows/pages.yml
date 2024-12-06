@@ -10,13 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build site
-        run: |
-          jekyll build --config _config.yml
+      # Step 2: Install Ruby and Bundler
+      - name: Install Ruby and Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0' # Specify the Ruby version
+          bundler-cache: true # Caches Bundler gems for faster builds
 
+      # Step 3: Install Jekyll and dependencies
+      - name: Install Jekyll
+        run: |
+          gem install jekyll bundler
+          bundle install
+
+      # Step 4: Build the Jekyll site
+      - name: Build site
+        run: jekyll build --config _config.yml
+
+      # Step 5: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:

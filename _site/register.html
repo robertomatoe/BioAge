@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - BioAge Revolution</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">BioAge Revolution</a>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="login.html" class="text-gray-600 hover:text-blue-600">Sign In</a>
+                    <a href="index.html" class="text-gray-600 hover:text-blue-600">Return to Main Site</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Registration Container -->
+    <div class="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div class="w-full max-w-lg">
+            <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+                <div class="p-8">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">Create Your Account</h2>
+                        <p class="mt-2 text-gray-600">Begin your personalized longevity journey</p>
+                    </div>
+
+                    <form id="registerForm" class="space-y-6" onsubmit="handleRegister(event)">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                                <input type="text" id="firstName" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                                <input type="text" id="lastName" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                            <input type="email" id="email" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                            <input type="password" id="password" required class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <div id="errorMessage" class="hidden text-sm text-red-600 text-center bg-red-50 rounded-lg p-2"></div>
+
+                        <button type="submit" class="w-full py-3 px-4 rounded-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700">
+                            Register
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleRegister(event) {
+            event.preventDefault();
+
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+
+            if (users.some(user => user.email === email)) {
+                alert('User with this email already exists.');
+                return;
+            }
+
+            users.push({ firstName, lastName, email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Account created successfully! Redirecting to sign-in...');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

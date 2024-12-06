@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Portal - BioAge Revolution</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col items-center justify-center">
+        <div class="w-full max-w-lg bg-white rounded-lg shadow-md p-6">
+            <h1 class="text-2xl font-bold mb-4 text-blue-600" id="profileName">Loading...</h1>
+            <p class="text-gray-600"><strong>Email:</strong> <span id="profileEmail"></span></p>
+            <p class="text-gray-600"><strong>Age:</strong> <span id="profileAge">Not provided</span></p>
+            <p class="text-gray-600"><strong>Preferences:</strong></p>
+            <pre class="bg-gray-100 p-4 rounded" id="profilePreferences">Loading...</pre>
+            <button onclick="logoutUser()" class="mt-4 py-2 px-4 bg-red-600 text-white rounded hover:bg-red-700">
+                Log Out
+            </button>
+        </div>
+    </div>
+    <script src="auth.js"></script>
+    <script>
+        loadUserProfile();
+    </script>
+</body>
+</html>

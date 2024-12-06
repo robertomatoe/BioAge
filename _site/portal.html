@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal - BioAge Revolution</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        window.onload = function () {
+            checkAuth();
+            loadUserData();
+            initializeHealthTrendsChart();
+        };
+
+        function checkAuth() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            if (!isAuthenticated) {
+                alert("You must log in to access the portal.");
+                window.location.href = 'login.html';
+            }
+        }
+
+        function loadUserData() {
+            const user = JSON.parse(localStorage.getItem('activeUser'));
+            if (!user) {
+                alert("Error loading user data. Please log in again.");
+                window.location.href = 'login.html';
+            }
+            document.getElementById('userName').textContent = `${user.firstName} ${user.lastName}`;
+            document.getElementById('biologicalAge').textContent = user.biologicalAge || 'Loading...';
+            document.getElementById('cellularHealth').textContent = user.cellularHealth || 'Loading...';
+            document.getElementById('telomereLength').textContent = user.telomereLength || 'Loading...';
+            document.getElementById('metabolicScore').textContent = user.metabolicScore || 'Loading...';
+        }
+
+        function toggleProfileMenu() {
+            const profileMenu = document.getElementById('profileMenu');
+            profileMenu.classList.toggle('hidden');
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('activeUser');
+            alert("You have been logged out.");
+            window.location.href = 'login.html';
+        }
+
+        function initializeHealthTrendsChart() {
+            const ctx = document.getElementById('healthTrendsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    datasets: [
+                        {
+                            label: 'Biological Age',
+                            data: [45, 44.5, 44, 43.2, 42.8],
+                            borderColor: 'rgb(59, 130, 246)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.3,
+                            pointRadius: 4,
+                            fill: true,
+                        },
+                        {
+                            label: 'Cellular Health',
+                            data: [87, 88, 90, 91, 92],
+                            borderColor: 'rgb(16, 185, 129)',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.3,
+                            pointRadius: 4,
+                            fill: true,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-6">
+                    <a href="index.html" class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">BioAge Revolution</a>
+                    <button class="text-gray-700 hover:text-blue-600" onclick="window.location.href='dashboard.html'">Dashboard</button>
+                    <button class="text-gray-700 hover:text-blue-600" onclick="window.location.href='health-trends.html'">Health Trends</button>
+                    <button class="text-gray-700 hover:text-blue-600" onclick="window.location.href='goals.html'">Goals</button>
+                    <button class="text-gray-700 hover:text-blue-600" onclick="window.location.href='treatments.html'">Treatments</button>
+                </div>
+                <div class="relative">
+                    <button onclick="toggleProfileMenu()" class="flex items-center space-x-3 text-gray-700 hover:text-blue-600">
+                        <span id="userName">Loading...</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                        <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Your Profile</a>
+                        <a href="settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Settings</a>
+                        <button onclick="logout()" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="p-6 max-w-7xl mx-auto">
+        <!-- Welcome Section -->
+        <section class="mb-10 text-center">
+            <h1 class="text-3xl font-bold text-gray-900">Welcome, <span id="userName">User</span>!</h1>
+            <p class="text-gray-600 mt-2">Here’s a snapshot of your journey and progress.</p>
+        </section>
+
+        <!-- Key Metrics Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+            <div class="p-6 bg-blue-100 rounded-lg shadow text-blue-700">
+                <h2 class="text-lg font-bold">Biological Age</h2>
+                <p id="biologicalAge" class="text-3xl mt-2">Loading...</p>
+            </div>
+            <div class="p-6 bg-green-100 rounded-lg shadow text-green-700">
+                <h2 class="text-lg font-bold">Cellular Health</h2>
+                <p id="cellularHealth" class="text-3xl mt-2">Loading...</p>
+            </div>
+            <div class="p-6 bg-purple-100 rounded-lg shadow text-purple-700">
+                <h2 class="text-lg font-bold">Telomere Length</h2>
+                <p id="telomereLength" class="text-3xl mt-2">Loading...</p>
+            </div>
+            <div class="p-6 bg-yellow-100 rounded-lg shadow text-yellow-700">
+                <h2 class="text-lg font-bold">Metabolic Score</h2>
+                <p id="metabolicScore" class="text-3xl mt-2">Loading...</p>
+            </div>
+        </section>
+
+        <!-- Health Trends Chart -->
+        <section class="bg-white rounded-lg shadow p-6 mb-10">
+            <h2 class="text-lg font-bold mb-4">Health Trends</h2>
+            <canvas id="healthTrendsChart" class="w-full h-64"></canvas>
+        </section>
+
+        <!-- Recommendations Section -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+            <div class="p-6 bg-blue-50 rounded-lg shadow">
+                <h3 class="text-lg font-bold text-blue-700">Exercise Plan</h3>
+                <p class="text-gray-600 mt-2">Increase moderate cardio to 45 minutes, 4 times per week. This can improve your metabolic age.</p>
+            </div>
+            <div class="p-6 bg-green-50 rounded-lg shadow">
+                <h3 class="text-lg font-bold text-green-700">Dietary Advice</h3>
+                <p class="text-gray-600 mt-2">Your omega-3 levels are low. Add fatty fish or supplements to your diet 2-3 times per week.</p>
+            </div>
+        </section>
+
+        <!-- Upcoming Treatments -->
+        <section class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-lg font-bold mb-4">Upcoming Treatments</h2>
+            <div class="space-y-4">
+                <div class="p-4 bg-gray-100 rounded-lg shadow">
+                    <p class="text-gray-900 font-bold">Cellular Optimization</p>
+                    <p class="text-sm text-gray-600 mt-1">Tomorrow, 10:00 AM with Dr. Sarah Chen</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

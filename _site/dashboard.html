@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - BioAge Revolution</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        const API_BASE_URL = 'http://127.0.0.1:5001';
+
+        window.onload = function () {
+            addTestUser({
+                firstName: "Jane",
+                lastName: "Doe",
+                biomarkers: {
+                    rbc: 5.2,
+                    wbc: 6.4,
+                    hemoglobin: 14.7,
+                    platelets: 245,
+                    weight: 68,
+                    height: 160,
+                    bmi: 26.5,
+                    systolic: 120,
+                    diastolic: 78,
+                },
+                gender: "female",
+            });
+            checkAuth();
+            loadUserData();
+            initializeChart();
+            updateBioAge();
+        };
+
+        function checkAuth() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            if (!isAuthenticated) {
+                alert("You must log in to access the dashboard.");
+                window.location.href = 'login.html';
+            }
+        }
+
+        function loadUserData() {
+            const user = JSON.parse(localStorage.getItem('activeUser'));
+            if (!user) {
+                alert("Error loading user data. Please log in again.");
+                window.location.href = 'login.html';
+            }
+            document.getElementById('userName').textContent = `${user.firstName} ${user.lastName}`;
+        }
+
+        async function updateBioAge() {
+            const user = JSON.parse(localStorage.getItem('activeUser'));
+
+            if (user && user.biomarkers) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/predict`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            red_blood_cells: user.biomarkers.rbc,
+                            white_blood_cells: user.biomarkers.wbc,
+                            hemoglobin: user.biomarkers.hemoglobin,
+                            platelets: user.biomarkers.platelets,
+                            weight: user.biomarkers.weight,
+                            height: user.biomarkers.height,
+                            bmi: user.biomarkers.bmi,
+                            systolic_bp: user.biomarkers.systolic,
+                            diastolic_bp: user.biomarkers.diastolic,
+                            gender: user.gender === "male" ? 1 : 2,
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API call failed with status ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        document.getElementById('bioAge').textContent = `${data.biological_age.toFixed(1)} years`;
+                        updateChartData(data.biological_age);
+                    } else {
+                        document.getElementById('bioAge').textContent = 'Error';
+                        console.error('API Error:', data);
+                    }
+                } catch (error) {
+                    document.getElementById('bioAge').textContent = 'Error';
+                    console.error('Error fetching biological age:', error);
+                }
+            } else {
+                document.getElementById('bioAge').textContent = 'No data';
+            }
+        }
+
+        function initializeChart() {
+            const ctx = document.getElementById('dashboardChart').getContext('2d');
+            window.bioAgeChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    datasets: [
+                        {
+                            label: 'Biological Age (Years)',
+                            data: [45, 44.5, 44, 43.2, 42.8],
+                            backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1,
+                        },
+                        {
+                            label: 'Cellular Health (%)',
+                            data: [87, 88, 90, 91, 92],
+                            backgroundColor: 'rgba(16, 185, 129, 0.5)',
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            borderWidth: 1,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+        }
+
+        function updateChartData(newBioAge) {
+            if (window.bioAgeChart) {
+                const bioAgeData = window.bioAgeChart.data.datasets[0].data;
+                bioAgeData.shift();
+                bioAgeData.push(newBioAge);
+                window.bioAgeChart.update();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('activeUser');
+            alert("You have been logged out.");
+            window.location.href = 'login.html';
+        }
+
+        // Add test user function for development
+        function addTestUser({
+            firstName = "Test",
+            lastName = "User",
+            biomarkers = {
+                rbc: 4.8,
+                wbc: 7.0,
+                hemoglobin: 14.0,
+                platelets: 250,
+                weight: 70,
+                height: 170,
+                bmi: 24.2,
+                systolic: 120,
+                diastolic: 80,
+            },
+            gender = "male",
+        } = {}) {
+            const user = {
+                firstName,
+                lastName,
+                biomarkers,
+                gender,
+            };
+            localStorage.setItem("isAuthenticated", "true");
+            localStorage.setItem("activeUser", JSON.stringify(user));
+            console.log("Test user added:", user);
+        }
+
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <a href="index.html" class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">BioAge Revolution</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="text-blue-600 font-medium">Dashboard</a>
+                    <a href="health-trends.html" class="text-gray-700 hover:text-blue-600">Health Trends</a>
+                    <a href="goals.html" class="text-gray-700 hover:text-blue-600">Goals</a>
+                    <a href="treatments.html" class="text-gray-700 hover:text-blue-600">Treatments</a>
+                </div>
+                <button onclick="logout()" class="text-gray-700 hover:text-blue-600">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="p-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Welcome Back, <span id="userName">User</span>!</h1>
+        <p class="text-gray-600 mb-6">Track your progress, explore trends, and stay motivated on your health journey.</p>
+
+        <!-- Key Metrics Section -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-blue-100 p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold">Biological Age</h2>
+                <p class="text-3xl font-bold text-blue-700" id="bioAge">--</p>
+                <p class="text-gray-600 mt-2">Based on your biomarkers</p>
+            </div>
+            <div class="bg-green-100 p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold">Cellular Health</h2>
+                <p class="text-3xl font-bold text-green-700">92%</p>
+                <p class="text-gray-600 mt-2">Up <strong>5%</strong> from last month.</p>
+            </div>
+            <div class="bg-purple-100 p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold">Telomere Length</h2>
+                <p class="text-3xl font-bold text-purple-700">8.2kb</p>
+                <p class="text-gray-600 mt-2">Above average for your age.</p>
+            </div>
+            <div class="bg-yellow-100 p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold">Metabolic Score</h2>
+                <p class="text-3xl font-bold text-yellow-700">85</p>
+                <p class="text-gray-600 mt-2">In the optimal range.</p>
+            </div>
+        </section>
+
+        <!-- Health Trends Section -->
+        <section class="mt-10">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Health Trends</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <canvas id="dashboardChart" class="w-full h-64"></canvas>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
