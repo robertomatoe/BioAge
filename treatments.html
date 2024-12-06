@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treatments - BioAge Revolution</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script>
+        window.onload = function () {
+            checkAuth();
+            loadUserData();
+            displayTreatments();
+        };
+
+        function checkAuth() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            if (!isAuthenticated) {
+                alert("You must log in to access your treatments.");
+                window.location.href = 'login.html';
+            }
+        }
+
+        function loadUserData() {
+            const user = JSON.parse(localStorage.getItem('activeUser'));
+            if (!user) {
+                alert("Error loading user data. Please log in again.");
+                window.location.href = 'login.html';
+            }
+            document.getElementById('userName').textContent = `${user.firstName} ${user.lastName}`;
+        }
+
+        function displayTreatments() {
+            const user = JSON.parse(localStorage.getItem('activeUser'));
+            const treatmentsList = document.getElementById('treatmentsList');
+
+            const treatments = user.treatments || [
+                { name: "Cellular Optimization", date: "2024-12-10", status: "Upcoming" },
+                { name: "Metabolic Therapy", date: "2024-12-15", status: "Completed" },
+                { name: "Telomere Regeneration", date: "2024-12-20", status: "Scheduled" },
+            ];
+
+            treatments.forEach(treatment => {
+                const treatmentItem = document.createElement('div');
+                treatmentItem.className = "p-6 bg-white rounded-lg shadow-lg mb-4";
+                treatmentItem.innerHTML = `
+                    <h3 class="text-lg font-semibold text-gray-900">${treatment.name}</h3>
+                    <p class="text-gray-600 mt-2">Date: <span class="font-medium">${treatment.date}</span></p>
+                    <p class="text-gray-600">Status: <span class="font-medium ${getStatusColor(treatment.status)}">${treatment.status}</span></p>
+                `;
+                treatmentsList.appendChild(treatmentItem);
+            });
+        }
+
+        function getStatusColor(status) {
+            switch (status) {
+                case "Upcoming": return "text-blue-600";
+                case "Completed": return "text-green-600";
+                case "Scheduled": return "text-yellow-600";
+                default: return "text-gray-600";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('activeUser');
+            alert("You have been logged out.");
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <a href="index.html" class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">BioAge Revolution</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="text-gray-700 hover:text-blue-600">Dashboard</a>
+                    <a href="health-trends.html" class="text-gray-700 hover:text-blue-600">Health Trends</a>
+                    <a href="goals.html" class="text-gray-700 hover:text-blue-600">Goals</a>
+                    <a href="treatments.html" class="text-blue-600 font-medium">Treatments</a>
+                </div>
+                <button onclick="logout()" class="text-gray-700 hover:text-blue-600">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="p-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Your Treatments, <span id="userName">User</span></h1>
+        <p class="text-gray-600 mb-6">View and manage your upcoming, completed, and scheduled treatments.</p>
+
+        <!-- Treatments Section -->
+        <section id="treatmentsList" class="space-y-4">
+            <!-- Dynamic Treatments Will Be Rendered Here -->
+        </section>
+    </main>
+</body>
+</html>

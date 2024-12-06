@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Trends - BioAge Revolution</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        window.onload = function () {
+            checkAuth();
+            loadUserData();
+            initializeCharts();
+        };
+
+        function checkAuth() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            if (!isAuthenticated) {
+                alert("You must log in to access health trends.");
+                window.location.href = 'login.html';
+            }
+        }
+
+        function loadUserData() {
+            const user = JSON.parse(localStorage.getItem('activeUser'));
+            if (!user) {
+                alert("Error loading user data. Please log in again.");
+                window.location.href = 'login.html';
+            }
+            document.getElementById('userName').textContent = `${user.firstName} ${user.lastName}`;
+        }
+
+        function initializeCharts() {
+            const ageCtx = document.getElementById('biologicalAgeChart').getContext('2d');
+            new Chart(ageCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    datasets: [
+                        {
+                            label: 'Biological Age (Years)',
+                            data: [45, 44.5, 44, 43.2, 42.8],
+                            borderColor: 'rgb(59, 130, 246)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.3,
+                            pointRadius: 4,
+                            fill: true,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                        },
+                    },
+                },
+            });
+
+            const healthCtx = document.getElementById('cellularHealthChart').getContext('2d');
+            new Chart(healthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    datasets: [
+                        {
+                            label: 'Cellular Health (%)',
+                            data: [87, 88, 90, 91, 92],
+                            borderColor: 'rgb(16, 185, 129)',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.3,
+                            pointRadius: 4,
+                            fill: true,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('activeUser');
+            alert("You have been logged out.");
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <a href="index.html" class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">BioAge Revolution</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="text-gray-700 hover:text-blue-600">Dashboard</a>
+                    <a href="health-trends.html" class="text-blue-600 font-medium">Health Trends</a>
+                    <a href="goals.html" class="text-gray-700 hover:text-blue-600">Goals</a>
+                    <a href="treatments.html" class="text-gray-700 hover:text-blue-600">Treatments</a>
+                </div>
+                <button onclick="logout()" class="text-gray-700 hover:text-blue-600">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="p-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Health Trends for <span id="userName">User</span></h1>
+        <p class="text-gray-600 mb-6">Visualize your progress and stay informed about your health trends.</p>
+
+        <!-- Charts Section -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Biological Age Chart -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">Biological Age</h2>
+                <canvas id="biologicalAgeChart" class="w-full h-64"></canvas>
+            </div>
+            <!-- Cellular Health Chart -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">Cellular Health</h2>
+                <canvas id="cellularHealthChart" class="w-full h-64"></canvas>
+            </div>
+        </section>
+
+        <!-- Insights Section -->
+        <section class="mt-10">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Insights</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                    <h3 class="font-semibold text-blue-700">Improvement in Biological Age</h3>
+                    <p class="text-gray-600 mt-2">Your biological age has decreased by 1.8 years over the last 5 months. Keep up with your exercise and dietary routines!</p>
+                </div>
+                <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                    <h3 class="font-semibold text-green-700">Cellular Health Trends</h3>
+                    <p class="text-gray-600 mt-2">Your cellular health is steadily improving, with a 5% increase over the last 5 months. Consider adding more antioxidants to your diet.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
